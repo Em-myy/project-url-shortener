@@ -41,7 +41,7 @@ server.get("/api/shorturl/:id", (req, res) => {
   const originalUrl = urls[id];
 
   if (!originalUrl) {
-    return res.json({ error: "Invalid request" });
+    return res.json({ error: "invalid url" });
   }
 
   res.redirect(originalUrl);
