@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const dns = require("dns");
 
 const server = express();
 
@@ -24,11 +25,19 @@ server.get("/", (req, res) => {
 server.post("/api/shorturl", (req, res) => {
   const originalUrl = req.body.url;
 
+  let hostname;
   try {
-    new URL(originalUrl);
+    const urlObj = new URL(originalUrl);
+    hostname = urlObj.hostname;
   } catch {
     return res.json({ error: "invalid url" });
   }
+
+  dns.lookup(hostname, (err) => {
+    if (err) {
+      return res.json({ error: "invalid url" });
+    }
+  });
 
   const shortId = counter++;
   urls[shortId] = originalUrl;
@@ -41,7 +50,7 @@ server.get("/api/shorturl/:id", (req, res) => {
   const originalUrl = urls[id];
 
   if (!originalUrl) {
-    return res.json({ error: "invalid url" });
+    return res.json({ error: "invalid request" });
   }
 
   res.redirect(originalUrl);
