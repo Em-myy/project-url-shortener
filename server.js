@@ -37,12 +37,12 @@ server.post("/api/shorturl", (req, res) => {
     if (err) {
       return res.json({ error: "invalid url" });
     }
+
+    const shortId = counter++;
+    urls[shortId] = originalUrl;
+
+    res.json({ original_url: originalUrl, short_url: shortId });
   });
-
-  const shortId = counter++;
-  urls[shortId] = originalUrl;
-
-  res.json({ original_url: originalUrl, short_url: shortId });
 });
 
 server.get("/api/shorturl/:id", (req, res) => {
