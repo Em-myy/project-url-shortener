@@ -25,15 +25,15 @@ server.get("/", (req, res) => {
 server.post("/api/shorturl", (req, res) => {
   const originalUrl = req.body.url;
 
-  let hostname;
+  let urlObj;
   try {
-    const urlObj = new URL(originalUrl);
+    urlObj = new URL(originalUrl);
     hostname = urlObj.hostname;
   } catch {
     return res.json({ error: "invalid url" });
   }
 
-  dns.lookup(hostname, (err) => {
+  dns.lookup(urlObj.hostname, (err) => {
     if (err) {
       return res.json({ error: "invalid url" });
     }
