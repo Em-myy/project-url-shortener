@@ -27,7 +27,7 @@ server.post("/api/shorturl", (req, res) => {
   try {
     new URL(originalUrl);
   } catch {
-    return res.json({ error: "Invalid URL" });
+    return res.json({ error: "invalid url" });
   }
 
   const shortId = counter++;
